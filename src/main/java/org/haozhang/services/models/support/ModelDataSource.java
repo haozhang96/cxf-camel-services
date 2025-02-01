@@ -1,6 +1,7 @@
 package org.haozhang.services.models.support;
 
 import jakarta.activation.DataSource;
+import jakarta.annotation.Nonnull;
 import org.haozhang.services.models.Model;
 
 import java.io.IOException;
@@ -8,7 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public interface ModelDataSource extends DataSource {
-
+    @Nonnull
     Model.Context.Type getType();
 
     @Override

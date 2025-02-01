@@ -1,14 +1,19 @@
-package org.haozhang.services.utils;
+package org.haozhang.services.utils.time;
 
 import jakarta.annotation.Nonnull;
 import lombok.Locked;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.StopWatch;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
-public class Stopwatch extends StopWatch {
+public class Stopwatch extends StopWatch implements Serializable {
+    private static final @Serial long serialVersionUID = 1L;
+
     public Stopwatch() {
-        super();
+        this(StringUtils.EMPTY);
     }
 
     public Stopwatch(String id) {

@@ -1,18 +1,21 @@
 package org.haozhang.services.models;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.activation.MimeType;
+import com.fasterxml.jackson.databind.util.TokenBuffer;
 import jakarta.annotation.Nonnull;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.xml.bind.annotation.XmlTransient;
-import org.apache.cxf.phase.Phase;
+import org.apache.commons.lang3.SerializationUtils;
+import org.haozhang.services.constants.SharedObjects;
+import org.haozhang.services.models.request.Request;
 import org.haozhang.services.models.support.ModelDataSource;
+import org.haozhang.services.support.esoteric.Unchecked;
 
-import javax.print.attribute.standard.Media;
 import java.awt.datatransfer.DataFlavor;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Properties;
 import java.util.function.Predicate;
 
 @XmlTransient
@@ -24,13 +27,29 @@ public interface Model extends Serializable, Cloneable {
 
     @Nonnull
     default <M extends Model> M copy() {
-        return (M) this;
+        try {
+            return Unchecked.cast(SerializationUtils.clone(this));
+        } catch (Exception exception) {
+
+        }
+
+        try (var tokenBuffer = new TokenBuffer(SharedObjects.OBJECT_MAPPER, false)) {
+            return Unchecked.cast(SharedObjects.OBJECT_MAPPER.readValue(tokenBuffer.asParser(), getClass()));
+//            return Unchecked.cast(SharedObjects.OBJECT_MAPPER.convertValue(this, getClass()));
+        } catch (Exception exception) {
+
+        }
+
+        throw new UnsupportedOperationException("");
     }
 
+    @Nonnull
     default ModelDataSource asDataSource() {
-
+        return null;
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = Context.class)
+    @JsonSubTypes(@JsonSubTypes.Type(Request.Context.class))
     class Context extends AbstractModel {
         @Nonnull
         private Instant timestamp = Instant.now();
@@ -45,6 +64,15 @@ public interface Model extends Serializable, Cloneable {
 
         public void setTimestamp(@Nonnull Instant timestamp) {
             this.timestamp = timestamp;
+        }
+
+        @Nonnull
+        public Type getType() {
+            return type;
+        }
+
+        public void setType(@Nonnull Type type) {
+            this.type = type;
         }
 
         public enum Type implements Predicate<String> {
@@ -80,17 +108,17 @@ public interface Model extends Serializable, Cloneable {
 
             @Nonnull
             public MediaType toMediaType() {
-
+                return mediaType;
             }
 
             @Nonnull
             public static Type infer(@Nonnull String content) {
-
+                return UNKNOWN;
             }
 
             @Override
             public boolean test(@Nonnull String content) {
-                return false;
+                return infer(content) == this;
             }
         }
     }
