@@ -9,11 +9,10 @@ import java.util.Optional;
 
 /**
  * This interface represents the overall contract for {@link java.lang.Enum} and is meant to be implemented by actual
- *   {@link java.lang.Enum} implementations. Other interfaces simply extend this method to ensure
- *
- * @param <E> The {@link java.lang.Enum} type represented by this {@link Enum}
+ *   {@link java.lang.Enum} implementations. Other interfaces simply extend this interface to encourage actual
+ *   {@link java.lang.Enum} implementations.
  */
-public interface Enum<E extends java.lang.Enum<E> & Enum<E>> extends Constable, Comparable<E>, Serializable {
+public interface Enum extends Constable, Serializable {
     //==================================================================================================================
     // Enum Implementation Methods
     //==================================================================================================================
@@ -33,7 +32,7 @@ public interface Enum<E extends java.lang.Enum<E> & Enum<E>> extends Constable, 
      * @see java.lang.Enum#getDeclaringClass()
      */
     @Nonnull
-    Class<E> getDeclaringClass();
+    Class<? extends java.lang.Enum<? extends Enum>> getDeclaringClass();
 
     //==================================================================================================================
     // Constable Implementation Methods
@@ -43,17 +42,7 @@ public interface Enum<E extends java.lang.Enum<E> & Enum<E>> extends Constable, 
      * @see java.lang.Enum#describeConstable()
      */
     @Override
-    Optional<java.lang.Enum.EnumDesc<E>> describeConstable();
-
-    //==================================================================================================================
-    // Comparable Implementation Methods
-    //==================================================================================================================
-
-    /**
-     * @see java.lang.Enum#compareTo(E)
-     */
-    @Override
-    int compareTo(@Nonnull E other);
+    Optional<? extends java.lang.Enum.EnumDesc<? extends Enum>> describeConstable();
 
     //==================================================================================================================
     // Object Implementation Methods
@@ -62,15 +51,18 @@ public interface Enum<E extends java.lang.Enum<E> & Enum<E>> extends Constable, 
     /**
      * @see java.lang.Enum#equals(Object)
      */
+    @Override
     boolean equals(@Nullable Object other);
 
     /**
      * @see java.lang.Enum#hashCode()
      */
+    @Override
     int hashCode();
 
     /**
      * @see java.lang.Enum#toString()
      */
+    @Override
     String toString();
 }

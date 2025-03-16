@@ -34,7 +34,7 @@ public interface Model extends Serializable, Cloneable {
         }
 
         try (var tokenBuffer = new TokenBuffer(SharedObjects.OBJECT_MAPPER, false)) {
-            return Unchecked.cast(SharedObjects.OBJECT_MAPPER.readValue(tokenBuffer.asParser(), getClass()));
+            return Unchecked.<Model, M>cast(SharedObjects.OBJECT_MAPPER.readValue(tokenBuffer.asParser(), getClass()));
 //            return Unchecked.cast(SharedObjects.OBJECT_MAPPER.convertValue(this, getClass()));
         } catch (Exception exception) {
 

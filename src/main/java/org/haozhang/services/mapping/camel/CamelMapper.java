@@ -3,7 +3,7 @@ package org.haozhang.services.mapping.camel;
 import jakarta.annotation.Nonnull;
 import org.apache.camel.Body;
 import org.apache.camel.Exchange;
-import org.haozhang.services.annotations.Adapter;
+import org.haozhang.services.annotations.metadata.Adapter;
 import org.haozhang.services.mapping.Mapper;
 
 @Adapter({"apply(I)", "apply(Exchange, I)"})

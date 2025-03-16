@@ -1,6 +1,7 @@
 package org.haozhang.services.utils.containers;
 
-import com.google.common.collect.Multimap;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 import jakarta.annotation.Nonnull;
 import jakarta.ws.rs.core.AbstractMultivaluedMap;
@@ -34,10 +35,13 @@ public interface MultiMap<K, V> extends MultiValueMap<K, V> {
         return new AbstractMultivaluedMap<>(this) {};
     }
 
-    default Multimap<K, V> toGuava() {
+    @Nonnull
+    default ListMultimap<K, V> toGuava() {
+
         return Multimaps.forMap(this);
     }
 
+    @Nonnull
     default MultiValueMap<K, V> toSpring() {
         return this;
     }

@@ -1,4 +1,4 @@
-package org.haozhang.services.annotations;
+package org.haozhang.services.annotations.metadata;
 
 import java.lang.annotation.*;
 

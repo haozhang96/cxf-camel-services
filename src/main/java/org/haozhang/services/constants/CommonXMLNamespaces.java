@@ -1,4 +1,4 @@
 package org.haozhang.services.constants;
 
-public interface CommonXMLNamespaces {
+public interface CommonXMLNamespaces extends Constants {
 }

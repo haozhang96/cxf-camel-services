@@ -1,17 +1,16 @@
 package org.haozhang.services.models;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import jakarta.annotation.Nonnull;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlTransient;
-import org.apache.cxf.service.model.ServiceModelUtil;
+import org.haozhang.services.support.jackson.JsonNoAutoDetect;
 
 import java.io.Serial;
 
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
+@JsonNoAutoDetect
 public abstract class AbstractModel implements Model {
     private static final @Serial long serialVersionUID = 1L;
 
